@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='site.css')}}" />
+    </head>
+
+    <body>
+        <div class="navbar">
+            <a href="{{ url_for('home') }}" class="navbar-brand">Home</a>
+        </div>
+
+        <div class="body-content">
+            {% block content %}
+            {% endblock %}
+            <hr/>
+            <footer>
+                <p>© 2018</p>
+            </footer>
+        </div>
+        {# and then elsewhere #}
+        <script>
+        // Only run what comes next *after* the page has loaded
+        addEventListener("DOMContentLoaded", function() {
+        // Grab all of the elements with a class of command
+        // (which all of the buttons we just created have)
+        var buttons = document.querySelectorAll(".testBtn");
+        for (var i=0, l=buttons.length; i<l; i++) {
+            var button = buttons[i];
+            // For each button, listen for the "click" event
+            button.addEventListener("click", function(e) {
+            // When a click happens, stop the button
+            // from submitting our form (if we have one)
+            e.preventDefault();
+
+            var clickedButton = e.target;
+            var command = clickedButton.value;
+
+            // Now we need to send the data to our server
+            // without reloading the page - this is the domain of
+            // AJAX (Asynchronous JavaScript And XML)
+            // We will create a new request object
+            // and set up a handler for the response
+            var request = new XMLHttpRequest();
+            request.onload = function() {
+                // We could do more interesting things with the response
+                // or, we could ignore it entirely
+                alert(request.responseText);
+            };
+            // We point the request at the appropriate command
+            request.open("POST", "/" + command, true);
+            // and then we send it off
+            request.send();
+            });
+        }
+        }, true);
+        </script>
+    </body>
+</html>
